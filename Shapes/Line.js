@@ -13,6 +13,7 @@ import { deg2Rad, inherits, makeGradient } from '../util';
  * @param {string} config.gradient.type "linear" | "radial"
  * @param {number[]} config.gradient.start [x0, y0, r0]
  * @param {number[]} config.gradient.end [x1, y1, r1]
+ * @param {Array<{ offset: number, color: string}>} config.gradient.colorStops
  * @param {number} config.rotate
  * @param {number[]} config.dash
  * @param {boolean} config.pathClosed

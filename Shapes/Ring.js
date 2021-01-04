@@ -19,6 +19,10 @@ import { deg2Rad, inherits, makeGradient } from '../util';
  * @param {Array<{ offset: number, color: string}>} config.gradient.colorStops
  * @param {number} config.rotate
  * @param {number[]} config.dash
+ * @param {number} config.shadowBlur,
+ * @param {string} config.shadowColor,
+ * @param {number} config.shadowOffsetX,
+ * @param {number} config.shadowOffsetY,
  * @returns {Ring}
  * @constructor
  */
@@ -42,6 +46,10 @@ function Ring(config) {
       gradient,
       rotate = 0,
       dash,
+      shadowBlur,
+      shadowColor,
+      shadowOffsetX,
+      shadowOffsetY,
     } = that.SHAPE_CONFIG;
 
     const resolvedGradient = makeGradient.call(this, gradient);
@@ -53,6 +61,10 @@ function Ring(config) {
 
     ctx.translate(x, y);
     ctx.rotate(deg2Rad(rotate));
+    ctx.shadowBlur = shadowBlur;
+    ctx.shadowColor = shadowColor;
+    ctx.shadowOffsetX = shadowOffsetX;
+    ctx.shadowOffsetY = shadowOffsetY;
 
     if (willFill) {
       ctx.beginPath();

@@ -19,6 +19,10 @@ import { deg2Rad, inherits, makeGradient } from '../util';
  * @param {number} config.rotate
  * @param {number[]} config.dash
  * @param {boolean} config.pathClosed
+ * @param {number} config.shadowBlur,
+ * @param {string} config.shadowColor,
+ * @param {number} config.shadowOffsetX,
+ * @param {number} config.shadowOffsetY,
  * @returns {Circle}
  * @constructor
  */
@@ -42,6 +46,10 @@ function Circle(config) {
       rotate = 0,
       dash,
       pathClosed = true,
+      shadowBlur,
+      shadowColor,
+      shadowOffsetX,
+      shadowOffsetY,
     } = that.SHAPE_CONFIG;
 
     const resolvedGradient = makeGradient.call(this, gradient);
@@ -53,6 +61,10 @@ function Circle(config) {
 
     ctx.translate(x, y);
     ctx.rotate(deg2Rad(rotate));
+    ctx.shadowBlur = shadowBlur;
+    ctx.shadowColor = shadowColor;
+    ctx.shadowOffsetX = shadowOffsetX;
+    ctx.shadowOffsetY = shadowOffsetY;
 
     if (willFill) {
       ctx.beginPath();

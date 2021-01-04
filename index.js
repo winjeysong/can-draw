@@ -23,6 +23,7 @@ const getSize = container => {
  * @returns {Draw}
  * @constructor
  * @description 祖先元素必须是有具体宽度的，在使用flex或grid布局时，必须设定width为绝对值或百分比值，否则会造成canvas容器宽度计算错误
+ * @author winjeysong
  */
 function Draw(config) {
   this.CONFIG = config || {};
