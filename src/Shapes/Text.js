@@ -22,24 +22,25 @@ function Text(config) {
   Shape.call(this, 'TEXT');
   this.SHAPE_CONFIG = config || {};
   this._setFont = function _setFont({
-     fontSize,
-     fontFamily,
-     fontStyle,
-     fontVariant,
-     fontWeight,
-     lineHeight,
-   }) {
+    fontSize,
+    fontFamily,
+    fontStyle,
+    fontVariant,
+    fontWeight,
+    lineHeight,
+  }) {
     const ctx = this._canvasCtx;
     ctx.font = [
       fontStyle,
       fontVariant,
       fontWeight,
-      makePx(fontSize) + (['number', 'string'].some(type => type === typeof lineHeight) ? '/' + lineHeight : ''),
-      fontFamily
+      makePx(fontSize) +
+        (['number', 'string'].some(type => type === typeof lineHeight) ? '/' + lineHeight : ''),
+      fontFamily,
     ]
       .join(' ')
       .trim();
-  }
+  };
 
   let that = this;
 
@@ -66,7 +67,14 @@ function Text(config) {
     ctx.strokeStyle = stroke;
     ctx.textAlign = textAlign;
 
-    that._setFont.call(this, { fontSize, fontFamily, fontStyle, fontVariant, fontWeight, lineHeight });
+    that._setFont.call(this, {
+      fontSize,
+      fontFamily,
+      fontStyle,
+      fontVariant,
+      fontWeight,
+      lineHeight,
+    });
 
     const willFill = !!(text && fill);
     const willStroke = !!(text && stroke);
@@ -75,7 +83,7 @@ function Text(config) {
     willStroke && ctx.strokeText(text, 0, 0);
 
     ctx.restore();
-  }
+  };
 
   return this;
 }
@@ -105,6 +113,21 @@ Text.prototype = Object.assign(Text.prototype, {
   setOffset(x, y) {
     this.SHAPE_CONFIG.x = this.SHAPE_CONFIG.x + x;
     this.SHAPE_CONFIG.y = this.SHAPE_CONFIG.y + y;
+  },
+  /**
+   * 重新设置配置项
+   * @param config
+   * @param merge 是否合并配置项
+   */
+  setConfig(config, merge = true) {
+    if (merge) {
+      this.SHAPE_CONFIG = {
+        ...this.SHAPE_CONFIG,
+        ...config,
+      };
+    } else {
+      this.SHAPE_CONFIG = config;
+    }
   },
 });
 

@@ -8,7 +8,7 @@ export function inherits(child, parent) {
   child.prototype = proto;
 }
 
-export const deg2Rad = deg => deg / 180 * Math.PI;
+export const deg2Rad = deg => (deg / 180) * Math.PI;
 
 export const isNum = v => /^[\-+]?\d+(\.\d+)?$/.test(v);
 
@@ -21,7 +21,8 @@ export function makeGradient(gradient) {
   if (gradient) {
     const { start, end, colorStops = [], type } = gradient;
     switch (type) {
-      default: break;
+      default:
+        break;
       case 'linear':
         fillGradient = ctx.createLinearGradient(...start, ...end);
         break;

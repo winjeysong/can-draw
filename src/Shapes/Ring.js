@@ -98,6 +98,22 @@ function Ring(config) {
 
 inherits(Ring, Shape);
 
-Ring.prototype = Object.assign(Ring.prototype, {});
+Ring.prototype = Object.assign(Ring.prototype, {
+  /**
+   * 重新设置配置项
+   * @param config
+   * @param merge 是否合并配置项
+   */
+  setConfig(config, merge = true) {
+    if (merge) {
+      this.SHAPE_CONFIG = {
+        ...this.SHAPE_CONFIG,
+        ...config,
+      };
+    } else {
+      this.SHAPE_CONFIG = config;
+    }
+  },
+});
 
 export default Ring;

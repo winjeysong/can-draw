@@ -29,8 +29,6 @@ function CustomShape(config) {
 
 inherits(CustomShape, Shape);
 
-CustomShape.prototype = Object.assign(CustomShape.prototype, {
-
-});
+CustomShape.prototype = Object.assign(CustomShape.prototype, {});
 
 export default CustomShape;

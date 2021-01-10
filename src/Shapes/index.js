@@ -13,14 +13,14 @@ function Shape(type) {
   this._mountContext = function() {
     that._canvasCtx = this._canvasCtx;
     that._contextMounted = true;
-  }
+  };
 }
 
 Shape.prototype = {
   constructor: Shape,
   getType() {
     return this._type;
-  }
-}
+  },
+};
 
 export default Shape;

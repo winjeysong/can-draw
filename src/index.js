@@ -23,7 +23,7 @@ const getSize = container => {
  * @returns {Draw}
  * @constructor
  * @description 祖先元素必须是有具体宽度的，在使用flex或grid布局时，必须设定width为绝对值或百分比值，否则会造成canvas容器宽度计算错误
- * @author winjeysong
+ * @author winjey-song@163.com
  */
 function Draw(config) {
   this.CONFIG = config || {};
@@ -89,7 +89,7 @@ Draw.prototype = {
     this._willDraw = true;
 
     const scale = this.DPR;
-    const containerEle = this._containerEle = container; // 容器
+    const containerEle = (this._containerEle = container); // 容器
     containerEle.innerHTML = '';
 
     const wrapperEle = document.createElement('div'); // 包裹层，主要用来动态获取宽高，宽高依赖于容器
