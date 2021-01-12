@@ -1,6 +1,6 @@
 {
   "name": "can-draw",
-  "version": "0.1.1-0",
+  "version": "0.1.1-1",
   "description": "Draw canvas conveniently.",
   "main": "dist/cjs/can-draw.js",
   "module": "dist/esm/can-draw.esm.js",
