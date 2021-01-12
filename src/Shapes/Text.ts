@@ -1,24 +1,14 @@
 import { CanDrawShape } from './';
-import { deg2Rad, getFakeCtx, inherits, makePx } from '../util';
+import { deg2Rad, getFakeCtx, makePx } from '../util';
 import { CSSStyleFont, ITextShapeConfig } from '../types';
 
 /**
  * 文本
- * @param {number} config.x
- * @param {number} config.y
- * @param {string} config.text
- * @param {string} config.fill
- * @param {string} config.stroke
- * @param {number | string} config.fontSize
- * @param {string} config.fontFamily
- * @param {string} config.fontStyle
- * @param {string} config.fontVariant
- * @param {number | string} config.fontWeight
- * @param {number | string} config.lineHeight
- * @param {string} config.textAlign
+ *
+ * draw text
  * @constructor
+ * @memberOf CanDraw
  */
-
 class Text extends CanDrawShape {
   SHAPE_CONFIG: ITextShapeConfig;
   constructor(config: ITextShapeConfig) {
@@ -73,10 +63,10 @@ class Text extends CanDrawShape {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(deg2Rad(rotate));
-    ctx.shadowBlur = shadowBlur;
-    ctx.shadowColor = shadowColor;
-    ctx.shadowOffsetX = shadowOffsetX;
-    ctx.shadowOffsetY = shadowOffsetY;
+    ctx.shadowBlur = shadowBlur as number;
+    ctx.shadowColor = shadowColor as string;
+    ctx.shadowOffsetX = shadowOffsetX as number;
+    ctx.shadowOffsetY = shadowOffsetY as number;
     ctx.globalAlpha = opacity;
     ctx.textAlign = textAlign;
 

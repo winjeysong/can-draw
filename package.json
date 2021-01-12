@@ -7,14 +7,15 @@
   "unpkg": "dist/umd/can-draw.min.js",
   "files": [
     "dist",
-    "lib",
-    "index.d.ts"
+    "lib"
   ],
+  "types": "lib/index.d.ts",
   "scripts": {
     "clear": "rm -rf dist lib",
     "prepare": "tsc --outDir lib --declarationDir lib --declaration true src/index.ts",
     "build": "npm run clear && npm run prepare && rollup -c",
-    "start": "rollup -c -w"
+    "start": "rollup -c -w",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",

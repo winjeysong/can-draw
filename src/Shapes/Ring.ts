@@ -1,30 +1,13 @@
 import { CanDrawShape } from './';
-import { deg2Rad, inherits, makeGradient } from '../util';
+import { deg2Rad, makeGradient } from '../util';
 import { IRingShapeConfig } from '../types';
 
 /**
  * 圆环/扇环
- * @param {number} config.x
- * @param {number} config.y
- * @param {number} config.innerRadius,
- * @param {number} config.outerRadius,
- * @param {number} config.angle
- * @param {string} config.fill
- * @param {string} config.stroke
- * @param {number} config.strokeWidth
- * @param {boolean} config.clockwise
- * @param config.gradient
- * @param {string} config.gradient.type "linear" | "radial"
- * @param {number[]} config.gradient.start [x0, y0, r0]
- * @param {number[]} config.gradient.end [x1, y1, r1]
- * @param {Array<{ offset: number, color: string}>} config.gradient.colorStops
- * @param {number} config.rotate
- * @param {number[]} config.dash
- * @param {number} config.shadowBlur,
- * @param {string} config.shadowColor,
- * @param {number} config.shadowOffsetX,
- * @param {number} config.shadowOffsetY,
+ *
+ * draw ring or section ring
  * @constructor
+ * @memberOf CanDraw
  */
 class Ring extends CanDrawShape {
   SHAPE_CONFIG: IRingShapeConfig;
@@ -64,10 +47,10 @@ class Ring extends CanDrawShape {
 
     ctx.translate(x, y);
     ctx.rotate(deg2Rad(rotate));
-    ctx.shadowBlur = shadowBlur;
-    ctx.shadowColor = shadowColor;
-    ctx.shadowOffsetX = shadowOffsetX;
-    ctx.shadowOffsetY = shadowOffsetY;
+    ctx.shadowBlur = shadowBlur as number;
+    ctx.shadowColor = shadowColor as string;
+    ctx.shadowOffsetX = shadowOffsetX as number;
+    ctx.shadowOffsetY = shadowOffsetY as number;
     ctx.globalAlpha = opacity;
 
     if (willFill) {

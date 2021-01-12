@@ -21,19 +21,23 @@ const getSize = (container: HTMLElement): [number, number] => {
 };
 
 /**
- * 方便日常使用封装canvas绘制工具
- * @returns {CanDraw}
+ * CanDraw
+ *
+ * 注意：祖先元素必须是有具体宽度/高度的，在使用 `flex` 或 `grid` 布局时，必须设定 `width/height` 为绝对值或百分比值，
+ * 否则会造成canvas容器宽度/高度计算错误
+ *
+ * NOTE: The width/height of parent element must be exact, or the width/height of canvas will be wrong.
+ * Especially when use `flex` or `grid` display, set `width/height` to exact value or percentage value.
  * @constructor
- * @description 祖先元素必须是有具体宽度的，在使用flex或grid布局时，必须设定width为绝对值或百分比值，否则会造成canvas容器宽度计算错误
  * @author winjey-song@163.com
  */
 class CanDraw {
-  static Shape: Shape;
-  static CustomShape: CustomShape;
-  static Circle: Circle;
-  static Line: Line;
-  static Text: Text;
-  static Ring: Ring;
+  static Shape: typeof Shape;
+  static CustomShape: typeof CustomShape;
+  static Circle: typeof Circle;
+  static Line: typeof Line;
+  static Text: typeof Text;
+  static Ring: typeof Ring;
 
   public CONFIG: IDrawConfig;
   public DPR: number;
@@ -183,17 +187,11 @@ class CanDraw {
   }
 }
 
-// @ts-ignore
 CanDraw.Shape = Shape;
-// @ts-ignore
 CanDraw.CustomShape = CustomShape;
-// @ts-ignore
 CanDraw.Circle = Circle;
-// @ts-ignore
 CanDraw.Text = Text;
-// @ts-ignore
 CanDraw.Ring = Ring;
-// @ts-ignore
 CanDraw.Line = Line;
 
 export default CanDraw;

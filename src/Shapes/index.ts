@@ -1,10 +1,3 @@
-/**
- * 形状
- * 对各形状设置x，y时，内部会默认进行translate(x, y)的操作
- * 将坐标系进行平移操作，并以(x, y)作为新的坐标系原点
- * 即每个形状实例都有一个属于自己的内部坐标系
- * @constructor
- */
 import {
   AllShapeConfigInterface,
   AllShapes,
@@ -14,6 +7,16 @@ import {
   ShapeType,
 } from '../types';
 
+/**
+ * 形状
+ * 对各形状设置x，y时，内部会默认进行translate(x, y)的操作
+ * 将坐标系进行平移操作，并以(x, y)作为新的坐标系原点
+ * 即每个形状实例都有一个属于自己的内部坐标系
+ *
+ * Shape constructor to handle all shapes instance
+ * @constructor
+ * @memberOf CanDraw
+ */
 export class Shape {
   protected readonly _type: ShapeType;
   protected _contextMounted: boolean;
@@ -58,6 +61,11 @@ export class Shape {
   }
 }
 
+/**
+ * CanDrawShape
+ * @abstract
+ * @constructor
+ */
 export abstract class CanDrawShape extends Shape {
   SHAPE_CONFIG!: Exclude<AllShapeConfigInterface, ICustomShapeConfig>;
 

@@ -1,9 +1,12 @@
 import { Shape } from './';
-import { inherits } from '../util';
 import { ICustomShapeConfig } from '../types';
 
 /**
  * 自定义形状，使用canvas原生api绘制
+ *
+ * draw custom shape with native canvas api
+ * @constructor
+ * @memberOf CanDraw
  */
 class CustomShape extends Shape {
   SHAPE_CONFIG: ICustomShapeConfig;

@@ -1,8 +1,4 @@
-/**
- * @param child
- * @param parent
- */
-import { Gradient } from './types';
+import { Gradient, LinearGradientCoords, RadialGradientCoords } from './types';
 
 export function inherits(child: any, parent: any) {
   const proto = Object.create(parent.prototype);
@@ -14,7 +10,6 @@ export const deg2Rad = (deg: number) => (deg / 180) * Math.PI;
 
 export const isNum = (v: string) => /^[\-+]?\d+(\.\d+)?$/.test(v);
 
-// 数字值默认带上px，其他值直接返回
 export const makePx = (n: string) => (isNum(n) ? n + 'px' : n) ?? '';
 
 export function makeGradient(gradient?: Gradient) {
@@ -26,12 +21,16 @@ export function makeGradient(gradient?: Gradient) {
       default:
         break;
       case 'linear':
-        // @ts-ignore
-        fillGradient = ctx.createLinearGradient(...start, ...end);
+        fillGradient = ctx.createLinearGradient(
+          ...(start as LinearGradientCoords),
+          ...(end as LinearGradientCoords),
+        );
         break;
       case 'radial':
-        // @ts-ignore
-        fillGradient = ctx.createRadialGradient(...start, ...end);
+        fillGradient = ctx.createRadialGradient(
+          ...(start as RadialGradientCoords),
+          ...(end as RadialGradientCoords),
+        );
     }
     colorStops.forEach(c => {
       fillGradient!.addColorStop(c.offset, c.color);
