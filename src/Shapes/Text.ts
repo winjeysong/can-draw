@@ -68,7 +68,7 @@ class Text extends CanDrawShape {
     ctx.shadowOffsetX = shadowOffsetX as number;
     ctx.shadowOffsetY = shadowOffsetY as number;
     ctx.globalAlpha = opacity;
-    ctx.textAlign = textAlign;
+    ctx.textAlign = textAlign as CanvasTextAlign;
 
     this._setFont({
       fontSize,
