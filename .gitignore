@@ -104,7 +104,9 @@ dist
 .tern-port
 
 # production
-es/
+dist/
 lib/
-umd/
 .DS_Store
+
+# idea
+.idea

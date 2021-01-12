@@ -1,0 +1,76 @@
+{
+  "name": "can-draw",
+  "version": "0.1.0",
+  "description": "Draw canvas conveniently.",
+  "main": "dist/cjs/can-draw.js",
+  "module": "dist/esm/can-draw.esm.js",
+  "unpkg": "dist/umd/can-draw.min.js",
+  "files": [
+    "dist",
+    "lib",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "clear": "rm -rf dist lib",
+    "prepare": "tsc --outDir lib --declarationDir lib --declaration true src/index.ts",
+    "build": "npm run clear && npm run prepare && rollup -c",
+    "start": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/winjeysong/can-draw.git"
+  },
+  "keywords": [
+    "canvas",
+    "javascript",
+    "can-draw",
+    "shape"
+  ],
+  "author": "winjeysong <winjey-song@163.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/winjeysong/can-draw/issues"
+  },
+  "homepage": "https://github.com/winjeysong/can-draw#readme",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-external-helpers": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "@rollup/plugin-babel": "^5.2.2",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@rollup/plugin-replace": "^2.3.4",
+    "@rollup/plugin-typescript": "^5.0.2",
+    "@rollup/plugin-url": "^6.0.0",
+    "babel-eslint": "^9.0.0",
+    "babel-plugin-dynamic-import-webpack": "^1.1.0",
+    "eslint": "^5.4.0",
+    "eslint-config-umi": "^1.4.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.14.0",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "prettier": "^1.19.1",
+    "rollup": "^2.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "tslib": "^2.0.0",
+    "typescript": "^4.0.0"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,scss,css}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}

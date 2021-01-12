@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "moduleResolution": "node",
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitThis": false,
+    "removeComments": true,
+    "noEmitOnError": true,
+  },
+  "include": ["src"]
+}

@@ -1,0 +1,10 @@
+{
+    "presets": [
+        ["@babel/preset-env", {
+            "modules": false
+        }]
+    ],
+    "plugins": [
+        "dynamic-import-webpack"
+    ]
+}
