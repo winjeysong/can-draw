@@ -18,14 +18,14 @@ import {
  * @memberOf CanDraw
  */
 export class Shape {
-  protected readonly _type: ShapeType;
+  protected readonly _type: ShapeType | 'NONE';
   protected _contextMounted: boolean;
   protected _canvasCtx!: CanvasRenderingContext2D;
   protected _shapes: Array<AllShapes> = [];
   SHAPE_CONFIG!: AllShapeConfigInterface;
 
-  protected constructor(type: ShapeType) {
-    this._type = type;
+  protected constructor(type?: ShapeType) {
+    this._type = type || 'NONE';
     this._contextMounted = false;
   }
 

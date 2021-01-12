@@ -14,8 +14,7 @@
     "clear": "rm -rf dist lib",
     "prepare": "tsc --outDir lib --declarationDir lib --declaration true src/index.ts",
     "build": "npm run clear && npm run prepare && rollup -c",
-    "start": "rollup -c -w",
-    "publish": "npm run build && npm publish"
+    "start": "rollup -c -w"
   },
   "repository": {
     "type": "git",

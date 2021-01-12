@@ -22,8 +22,8 @@ export type Gradient = {
   colorStops: GradientColorStops;
 };
 export type Coords = {
-  x: number;
-  y: number;
+  x?: number;
+  y?: number;
 };
 export type CSSStyleFont = Pick<
   CSSStyleDeclaration,
@@ -164,12 +164,15 @@ export interface IRingShapeConfig extends IShapeConfig, Partial<CanvasShadowStyl
   clockwise?: boolean;
 }
 
-export interface ITextShapeConfig extends IShapeConfig, CSSStyleFont, Partial<CanvasShadowStyles> {
+export interface ITextShapeConfig
+  extends IShapeConfig,
+    Partial<CSSStyleFont>,
+    Partial<CanvasShadowStyles> {
   /**
    * text to draw
    */
   text: string;
-  textAlign: CanvasTextAlign;
+  textAlign?: CanvasTextAlign;
 }
 
 export interface ICustomShapeConfig extends Partial<CanvasRenderingContext2D> {

@@ -41,14 +41,13 @@ class CanDraw {
 
   public CONFIG: IDrawConfig;
   public DPR: number;
-  private _shapes: Array<Circle> = [];
   private _willDraw: boolean = false;
   private _size: [number, number] | [] = [];
   private _containerEle: HTMLElement | null = null;
   private _canvasEle: HTMLCanvasElement | null = null;
   private _canvasCtx: CanvasRenderingContext2D | null = null;
 
-  constructor(config: IDrawConfig) {
+  constructor(config?: IDrawConfig) {
     this.CONFIG = config || {};
     this.DPR = window.devicePixelRatio || 1;
     this.init(); // 直接调用init方法，如果初始化时设置了容器，则直接生成元素，否则需要手动调用setContainer和init方法
