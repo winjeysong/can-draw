@@ -1,17 +1,15 @@
-import Shape from './';
+import { CanDrawShape } from './';
 import { deg2Rad, inherits, makeGradient } from '../util';
+import { ILineShapeConfig } from '../types';
 
 /**
- * 圆环/扇环
+ * 路径/闭合路径
  * @param {number} config.x
  * @param {number} config.y
- * @param {number} config.innerRadius,
- * @param {number} config.outerRadius,
- * @param {number} config.angle
+ * @param {Array<number>} config.points [x0, y0, x1, y1, ..., xn, yn]
  * @param {string} config.fill
  * @param {string} config.stroke
  * @param {number} config.strokeWidth
- * @param {boolean} config.clockwise
  * @param config.gradient
  * @param {string} config.gradient.type "linear" | "radial"
  * @param {number[]} config.gradient.start [x0, y0, r0]
@@ -19,101 +17,89 @@ import { deg2Rad, inherits, makeGradient } from '../util';
  * @param {Array<{ offset: number, color: string}>} config.gradient.colorStops
  * @param {number} config.rotate
  * @param {number[]} config.dash
+ * @param {boolean} config.pathClosed
+ * @param {string} config.lineCap
  * @param {number} config.shadowBlur,
  * @param {string} config.shadowColor,
  * @param {number} config.shadowOffsetX,
  * @param {number} config.shadowOffsetY,
- * @returns {Ring}
+ * @param {number} config.opacity
  * @constructor
  */
-function Ring(config) {
-  Shape.call(this, 'RING');
-  this.SHAPE_CONFIG = config || {};
 
-  let that = this;
-  this._drawShape = function() {
+class Line extends CanDrawShape {
+  SHAPE_CONFIG: ILineShapeConfig;
+  constructor(config: ILineShapeConfig) {
+    super('LINE');
+    this.SHAPE_CONFIG = config;
+  }
+
+  _drawShape() {
     const ctx = this._canvasCtx;
     const {
       x = 0,
       y = 0,
-      innerRadius,
-      outerRadius,
-      angle = 360,
+      points = [],
       fill,
       stroke,
-      strokeWidth,
-      clockwise = true,
+      strokeWidth = 1,
       gradient,
       rotate = 0,
       dash,
+      pathClosed = true,
+      lineCap = 'butt',
       shadowBlur,
       shadowColor,
       shadowOffsetX,
       shadowOffsetY,
-    } = that.SHAPE_CONFIG;
+      opacity = 1,
+    } = this.SHAPE_CONFIG;
 
     const resolvedGradient = makeGradient.call(this, gradient);
     const willFill = !!fill;
     const willStroke = !!stroke;
-    const moreThan360 = angle >= 360;
 
     ctx.save();
 
     ctx.translate(x, y);
     ctx.rotate(deg2Rad(rotate));
+    ctx.lineCap = lineCap;
     ctx.shadowBlur = shadowBlur;
     ctx.shadowColor = shadowColor;
     ctx.shadowOffsetX = shadowOffsetX;
     ctx.shadowOffsetY = shadowOffsetY;
+    ctx.globalAlpha = opacity;
+
+    ctx.beginPath();
+    const copiedPoints = [...points];
+    const startX = copiedPoints.shift() as number;
+    const startY = copiedPoints.shift() as number;
+    ctx.moveTo(startX, startY);
+    copiedPoints.forEach((p, idx, arr) => {
+      const x = arr.shift() as number;
+      const y = arr.shift() as number;
+      ctx.lineTo(x, y);
+    });
+    // @ts-ignore
+    copiedPoints.length > 1 && ctx.lineTo(...copiedPoints);
 
     if (willFill) {
-      ctx.beginPath();
+      // @ts-ignore
       ctx.fillStyle = resolvedGradient || fill;
-      ctx.moveTo(innerRadius, 0);
-      ctx.arc(0, 0, innerRadius, 0, deg2Rad(angle), !clockwise);
-      ctx.lineTo(innerRadius * Math.cos(deg2Rad(angle)), innerRadius * Math.sin(deg2Rad(angle)));
-      moreThan360
-        ? ctx.moveTo(outerRadius * Math.cos(deg2Rad(angle)), outerRadius * Math.sin(deg2Rad(angle)))
-        : ctx.lineTo(
-            outerRadius * Math.cos(deg2Rad(angle)),
-            outerRadius * Math.sin(deg2Rad(angle)),
-          );
-      ctx.arc(0, 0, outerRadius, deg2Rad(angle), 0, clockwise);
-      ctx.closePath();
       ctx.fill();
     }
 
     if (willStroke) {
+      // @ts-ignore
       ctx.strokeStyle = resolvedGradient || stroke;
       ctx.lineWidth = strokeWidth;
       !!dash && ctx.setLineDash(dash);
+      pathClosed && ctx.closePath();
       ctx.stroke();
     }
 
     ctx.restore();
-  };
-
-  return this;
+  }
 }
 
-inherits(Ring, Shape);
-
-Ring.prototype = Object.assign(Ring.prototype, {
-  /**
-   * 重新设置配置项
-   * @param config
-   * @param merge 是否合并配置项
-   */
-  setConfig(config, merge = true) {
-    if (merge) {
-      this.SHAPE_CONFIG = {
-        ...this.SHAPE_CONFIG,
-        ...config,
-      };
-    } else {
-      this.SHAPE_CONFIG = config;
-    }
-  },
-});
-
-export default Ring;
+export default Line;

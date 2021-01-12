@@ -1,18 +1,20 @@
-import Shape from './';
+import { Shape } from './';
 import { inherits } from '../util';
+import { ICustomShapeConfig } from '../types';
 
 /**
  * 自定义形状，使用canvas原生api绘制
- * @param config
- * @returns {CustomShape}
- * @constructor
  */
-function CustomShape(config) {
-  Shape.call(this, 'CUSTOM');
-  this.SHAPE_CONFIG = config;
+class CustomShape extends Shape {
+  SHAPE_CONFIG: ICustomShapeConfig;
+  constructor(config: ICustomShapeConfig) {
+    super('CUSTOM');
+    this.SHAPE_CONFIG = config;
+  }
 
-  this._drawShape = function() {
+  _drawShape() {
     const ctx = this._canvasCtx;
+    const config = this.SHAPE_CONFIG;
     ctx.save();
     Object.keys(config).forEach(c => {
       if (c === 'drawFunc') {
@@ -22,13 +24,7 @@ function CustomShape(config) {
       }
     });
     ctx.restore();
-  };
-
-  return this;
+  }
 }
-
-inherits(CustomShape, Shape);
-
-CustomShape.prototype = Object.assign(CustomShape.prototype, {});
 
 export default CustomShape;

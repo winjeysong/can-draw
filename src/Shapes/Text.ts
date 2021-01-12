@@ -1,5 +1,6 @@
-import Shape from './';
-import { inherits, makePx } from '../util';
+import { CanDrawShape } from './';
+import { deg2Rad, getFakeCtx, inherits, makePx } from '../util';
+import { CSSStyleFont, ITextShapeConfig } from '../types';
 
 /**
  * 文本
@@ -15,43 +16,46 @@ import { inherits, makePx } from '../util';
  * @param {number | string} config.fontWeight
  * @param {number | string} config.lineHeight
  * @param {string} config.textAlign
- * @returns {Text}
  * @constructor
  */
-function Text(config) {
-  Shape.call(this, 'TEXT');
-  this.SHAPE_CONFIG = config || {};
-  this._setFont = function _setFont({
+
+class Text extends CanDrawShape {
+  SHAPE_CONFIG: ITextShapeConfig;
+  constructor(config: ITextShapeConfig) {
+    super('TEXT');
+    this.SHAPE_CONFIG = config;
+  }
+
+  private _setFont({
     fontSize,
     fontFamily,
     fontStyle,
     fontVariant,
     fontWeight,
     lineHeight,
-  }) {
+  }: Partial<CSSStyleFont>) {
     const ctx = this._canvasCtx;
     ctx.font = [
       fontStyle,
       fontVariant,
       fontWeight,
-      makePx(fontSize) +
+      makePx(fontSize || '') +
         (['number', 'string'].some(type => type === typeof lineHeight) ? '/' + lineHeight : ''),
       fontFamily,
     ]
       .join(' ')
       .trim();
-  };
+  }
 
-  let that = this;
-
-  this._drawShape = function() {
+  _drawShape() {
     const ctx = this._canvasCtx;
     const {
-      x,
-      y,
+      x = 0,
+      y = 0,
       text,
       fill,
       stroke,
+      rotate = 0,
       fontSize,
       fontFamily,
       fontStyle,
@@ -59,15 +63,24 @@ function Text(config) {
       fontWeight,
       lineHeight,
       textAlign,
-    } = that.SHAPE_CONFIG;
+      shadowBlur,
+      shadowColor,
+      shadowOffsetX,
+      shadowOffsetY,
+      opacity = 1,
+    } = this.SHAPE_CONFIG;
 
     ctx.save();
     ctx.translate(x, y);
-    ctx.fillStyle = fill;
-    ctx.strokeStyle = stroke;
+    ctx.rotate(deg2Rad(rotate));
+    ctx.shadowBlur = shadowBlur;
+    ctx.shadowColor = shadowColor;
+    ctx.shadowOffsetX = shadowOffsetX;
+    ctx.shadowOffsetY = shadowOffsetY;
+    ctx.globalAlpha = opacity;
     ctx.textAlign = textAlign;
 
-    that._setFont.call(this, {
+    this._setFont({
       fontSize,
       fontFamily,
       fontStyle,
@@ -79,56 +92,35 @@ function Text(config) {
     const willFill = !!(text && fill);
     const willStroke = !!(text && stroke);
 
-    willFill && ctx.fillText(text, 0, 0);
-    willStroke && ctx.strokeText(text, 0, 0);
+    if (willFill) {
+      // @ts-ignore
+      ctx.fillStyle = fill;
+      ctx.fillText(text, 0, 0);
+    }
+
+    if (willStroke) {
+      // @ts-ignore
+      ctx.strokeStyle = stroke;
+      ctx.strokeText(text, 0, 0);
+    }
 
     ctx.restore();
-  };
+  }
 
-  return this;
-}
-
-inherits(Text, Shape);
-
-Text.prototype = Object.assign(Text.prototype, {
   /**
    * 获取文本宽度
    * @returns {number}
    */
   getWidth() {
-    if (this._contextMounted) {
-      const ctx = this._canvasCtx;
+    const ctx = getFakeCtx();
+    if (ctx) {
       ctx.save();
-      this._setFont(this.SHAPE_CONFIG);
+      this._setFont.call({ ...this, _canvasCtx: ctx }, this.SHAPE_CONFIG);
       const width = ctx.measureText(this.SHAPE_CONFIG.text).width;
       ctx.restore();
       return width;
     }
-  },
-  /**
-   * 设置偏移
-   * @param {number} x
-   * @param{number} y
-   */
-  setOffset(x, y) {
-    this.SHAPE_CONFIG.x = this.SHAPE_CONFIG.x + x;
-    this.SHAPE_CONFIG.y = this.SHAPE_CONFIG.y + y;
-  },
-  /**
-   * 重新设置配置项
-   * @param config
-   * @param merge 是否合并配置项
-   */
-  setConfig(config, merge = true) {
-    if (merge) {
-      this.SHAPE_CONFIG = {
-        ...this.SHAPE_CONFIG,
-        ...config,
-      };
-    } else {
-      this.SHAPE_CONFIG = config;
-    }
-  },
-});
+  }
+}
 
 export default Text;

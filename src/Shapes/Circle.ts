@@ -1,5 +1,6 @@
-import Shape from './';
+import { CanDrawShape } from './';
 import { deg2Rad, inherits, makeGradient } from '../util';
+import { Coords, ICircleShapeConfig } from '../types';
 
 /**
  * 圆形/扇形
@@ -23,15 +24,18 @@ import { deg2Rad, inherits, makeGradient } from '../util';
  * @param {string} config.shadowColor,
  * @param {number} config.shadowOffsetX,
  * @param {number} config.shadowOffsetY,
- * @returns {Circle}
  * @constructor
  */
-function Circle(config) {
-  Shape.call(this, 'CIRCLE');
-  this.SHAPE_CONFIG = config || {};
-  let that = this;
 
-  this._drawShape = function() {
+class Circle extends CanDrawShape {
+  SHAPE_CONFIG: ICircleShapeConfig;
+  constructor(config: ICircleShapeConfig) {
+    super('CIRCLE');
+    this.SHAPE_CONFIG = config;
+  }
+
+  // private _that = this;
+  _drawShape() {
     const ctx = this._canvasCtx;
     const {
       x = 0,
@@ -40,7 +44,7 @@ function Circle(config) {
       angle = 360,
       fill,
       stroke,
-      strokeWidth,
+      strokeWidth = 1,
       clockwise = true,
       gradient,
       rotate = 0,
@@ -50,7 +54,8 @@ function Circle(config) {
       shadowColor,
       shadowOffsetX,
       shadowOffsetY,
-    } = that.SHAPE_CONFIG;
+      opacity = 1,
+    } = this.SHAPE_CONFIG;
 
     const resolvedGradient = makeGradient.call(this, gradient);
     const willFill = !!fill;
@@ -65,9 +70,11 @@ function Circle(config) {
     ctx.shadowColor = shadowColor;
     ctx.shadowOffsetX = shadowOffsetX;
     ctx.shadowOffsetY = shadowOffsetY;
+    ctx.globalAlpha = opacity;
 
     if (willFill) {
       ctx.beginPath();
+      // @ts-ignore
       ctx.fillStyle = resolvedGradient || fill;
       ctx.moveTo(0, 0);
       ctx.arc(0, 0, radius, 0, deg2Rad(angle), !clockwise);
@@ -76,6 +83,7 @@ function Circle(config) {
 
     if (willStroke) {
       ctx.beginPath();
+      // @ts-ignore
       ctx.strokeStyle = resolvedGradient || stroke;
       ctx.lineWidth = strokeWidth;
       pathClosed && !moreThan360 && ctx.moveTo(0, 0);
@@ -86,47 +94,7 @@ function Circle(config) {
     }
 
     ctx.restore();
-  };
-
-  return this;
+  }
 }
-
-inherits(Circle, Shape);
-
-Circle.prototype = Object.assign(Circle.prototype, {
-  /**
-   * 设置偏移
-   * @param {number} x
-   * @param{number} y
-   */
-  setOffset(x, y) {
-    this.SHAPE_CONFIG.x = this.SHAPE_CONFIG.x + x;
-    this.SHAPE_CONFIG.y = this.SHAPE_CONFIG.y + y;
-  },
-  /**
-   * 设置绘图原点
-   * @param x
-   * @param y
-   */
-  setXY({ x, y }) {
-    x && (this.SHAPE_CONFIG.x = x);
-    y && (this.SHAPE_CONFIG.y = y);
-  },
-  /**
-   * 重新设置配置项
-   * @param config
-   * @param merge 是否合并配置项
-   */
-  setConfig(config, merge = true) {
-    if (merge) {
-      this.SHAPE_CONFIG = {
-        ...this.SHAPE_CONFIG,
-        ...config,
-      };
-    } else {
-      this.SHAPE_CONFIG = config;
-    }
-  },
-});
 
 export default Circle;
