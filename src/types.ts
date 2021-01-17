@@ -173,6 +173,7 @@ export interface ITextShapeConfig
    */
   text: string;
   textAlign?: CanvasTextAlign;
+  textBaseline?: CanvasTextBaseline;
 }
 
 export interface ICustomShapeConfig extends Partial<CanvasRenderingContext2D> {
