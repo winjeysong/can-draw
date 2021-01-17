@@ -98,11 +98,11 @@ export abstract class CanDrawShape extends Shape {
    * @param config
    * @param merge 是否合并配置项
    */
-  setConfig(config: ICircleShapeConfig, merge: boolean = true) {
+  setConfig(config: Exclude<AllShapeConfigInterface, ICustomShapeConfig>, merge: boolean = true) {
     if (merge) {
       this.SHAPE_CONFIG = {
         ...this.SHAPE_CONFIG,
-        ...config,
+        ...(config as Partial<Exclude<AllShapeConfigInterface, ICustomShapeConfig>>),
       };
     } else {
       this.SHAPE_CONFIG = config;
