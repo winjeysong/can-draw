@@ -22,11 +22,14 @@ With `can-draw`, you CAN DRAW canvas more conveniently.
 ```
 
 2. Use with npm
-1. Install
+    1. Install
+    
     ```shell
     npm i can-draw --save
     ```
-2. Import
+    
+    2. Import
+    
     ```js
      // es module
      import CanDraw from 'can-draw';
