@@ -12,8 +12,10 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "clear": "rm -rf dist lib",
-    "prepare": "tsc --outDir lib --declarationDir lib --declaration true src/index.ts",
-    "build": "npm run clear && npm run prepare && rollup -c",
+    "build:tsc": "tsc --outDir lib --declarationDir lib --declaration true src/index.ts",
+    "build:rollup": "rollup -c",
+    "prepare": "npm run clear && npm run build:tsc && npm run build:rollup",
+    "build": "npm run prepare",
     "start": "rollup -c -w"
   },
   "repository": {
