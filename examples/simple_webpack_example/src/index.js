@@ -1,4 +1,5 @@
 import CanDraw from 'can-draw';
+import debounce from 'lodash.debounce';
 import './style.css';
 
 const canDraw = new CanDraw({ container: document.getElementById('container') });
@@ -9,6 +10,7 @@ const minVal = 0,
   currentValue = 80,
   center = ['50%', '55%'],
   totalRadius = (3 / 2) * Math.PI; // 5/4Pi ~ -1/4Pi;
+let committedValue;
 
 const shapes = {
   // inner circle
@@ -17,9 +19,6 @@ const shapes = {
     angle: 360,
     fill: true,
     shadowColor: '#ddd',
-    shadowBlur: 4,
-    shadowOffsetX: 2,
-    shadowOffsetY: 2,
   }),
   // dashed grey ring
   circle2: new CanDraw.Circle({
@@ -52,10 +51,11 @@ const shapes = {
 
 startAnimation();
 
-window.addEventListener('resize', function resizeHandler() {
+const resizeHandler = debounce(() => {
   canDraw.resize();
-  draw();
-});
+  draw(committedValue);
+}, 400);
+window.addEventListener('resize', resizeHandler);
 
 function draw(value) {
   const width = canDraw.getWidth();
@@ -132,7 +132,7 @@ function draw(value) {
     });
   });
 
-  canDraw.clear();
+  canDraw.clear(shape);
   shape.add(...Object.values(shapes).flat());
   canDraw.add(shape);
 }
@@ -144,6 +144,7 @@ function startAnimation() {
     !startTime && (startTime = stamp);
     v += (currentValue - v) * 0.1;
     draw(v);
+    committedValue = v;
 
     if (v.toPrecision(4) < currentValue) {
       requestAnimationFrame(animate);
