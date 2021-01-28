@@ -84,7 +84,7 @@ module.exports = {
 <div>Copyright © ${new Date().getFullYear()} Winjey Song.</div>
 <div style='display: flex;align-items: center;justify-content: center'>
   Built with &nbsp;
-  <a href='https://github.com/facebook/docusaurus' target='_blank' style='display: inline-flex'><img src='/img/docusaurus.svg' height='20' alt='Docusaurus' /></a>.
+  <a href='https://github.com/facebook/docusaurus' target='_blank' style='display: inline-flex'><img src='${baseUrl}img/docusaurus.svg' height='20' alt='Docusaurus' /></a>.
 </div>
 `,
     },
