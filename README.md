@@ -57,8 +57,8 @@ var shape = new CanDraw.Shape();
 
 // a dashed circle
 const circle = new CanDraw.Circle({
-  x: rx,
-  y: ry,
+  x: 0,
+  y: 0,
   angle: 360,
   radius: 10,
   strokeWidth: 2,

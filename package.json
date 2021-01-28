@@ -35,7 +35,7 @@
   "bugs": {
     "url": "https://github.com/winjeysong/can-draw/issues"
   },
-  "homepage": "https://github.com/winjeysong/can-draw#readme",
+  "homepage": "https://9311.me/can-draw",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
