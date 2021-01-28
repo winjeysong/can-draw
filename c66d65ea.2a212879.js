@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[19],{90:function(a){a.exports=JSON.parse('{"allTagsPath":"/can-draw/blog/tags","slug":"hola","name":"hola","count":1,"permalink":"/can-draw/blog/tags/hola"}')}}]);
