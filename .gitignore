@@ -106,6 +106,7 @@ dist
 # production
 dist/
 lib/
+types/
 .DS_Store
 
 # idea

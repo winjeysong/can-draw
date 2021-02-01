@@ -1,51 +1,77 @@
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
-import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import url from '@rollup/plugin-url';
 import typescript from '@rollup/plugin-typescript';
 
 import pkgJson from './package.json';
 import path from 'path';
+import fs from 'fs';
+
+const dir = 'src/Shapes';
+const shapesName = fs.readdirSync(path.resolve(dir));
+const cModuleMap = shapesName.reduce((prev, name) => {
+  const [filename] = name.split('.');
+  prev[`Shapes/${filename}`] = `${dir}/${name}`;
+  return prev;
+}, {});
 
 const plugins = [
+  typescript(),
   url(),
+  resolve({ extensions: ['.ts'] }),
+  commonjs(),
   babel({
     exclude: 'node_modules/**',
-    plugins: ['@babel/plugin-external-helpers'],
+    babelHelpers: 'runtime',
+    extensions: ['.ts'],
   }),
-  resolve(),
-  commonjs(),
 ];
 
-export default {
-  input: 'src/index.ts',
-  plugins: [typescript()],
-  output: [
-    {
-      file: path.resolve(__dirname, pkgJson.main),
-      format: 'cjs',
-      name: 'CanDraw',
-      plugins: plugins,
+const external = () => [/@babel\/runtime/, /tslib/, /core-js/];
+
+export default [
+  {
+    input: {
+      index: 'src/index.ts',
+      util: 'src/util.ts',
+      ...cModuleMap,
     },
-    {
-      file: path.resolve(__dirname, pkgJson.module),
-      format: 'esm',
-      name: 'CanDraw',
-      plugins: plugins,
-    },
-    {
-      format: 'umd',
-      file: 'dist/umd/can-draw.js',
-      name: 'CanDraw',
-      plugins: [...plugins, replace({ 'process.env.NODE_ENV': '"development"' })],
-    },
-    {
-      format: 'umd',
-      file: path.resolve(__dirname, pkgJson.unpkg),
-      name: 'CanDraw',
-      plugins: [...plugins, replace({ 'process.env.NODE_ENV': '"production"' }), terser()],
-    },
-  ].map(item => ({ ...item, exports: 'default' })),
-};
+    plugins,
+    output: [
+      {
+        dir: 'dist/lib',
+        entryFileNames: '[name].js',
+        format: 'es',
+      },
+    ],
+    external,
+  },
+  {
+    input: 'src/index.ts',
+    plugins,
+    output: [
+      {
+        file: path.resolve(__dirname, pkgJson.main),
+        format: 'cjs',
+        name: 'CanDraw',
+        exports: 'default',
+      },
+    ],
+    external: external(),
+  },
+  {
+    input: 'src/index.ts',
+    plugins,
+    output: [
+      {
+        format: 'umd',
+        file: path.resolve(__dirname, pkgJson.unpkg),
+        name: 'CanDraw',
+        exports: 'default',
+        plugins: [terser()],
+      },
+    ],
+  },
+];

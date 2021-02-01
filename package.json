@@ -2,21 +2,23 @@
   "name": "can-draw",
   "version": "0.1.1-2",
   "description": "Draw canvas conveniently.",
-  "main": "dist/cjs/can-draw.js",
-  "module": "dist/esm/can-draw.esm.js",
-  "unpkg": "dist/umd/can-draw.min.js",
+  "main": "dist/index.js",
+  "module": "dist/lib/index.js",
+  "unpkg": "dist/can-draw.min.js",
   "files": [
     "dist",
-    "lib"
+    "types"
   ],
-  "types": "lib/index.d.ts",
+  "types": "types/index.d.ts",
   "scripts": {
-    "clear": "rm -rf dist lib",
-    "build:tsc": "tsc --outDir lib --declarationDir lib --declaration true src/index.ts",
+    "clean": "rimraf dist types",
+    "start": "rollup -c -w",
+    "prebuild": "npm run clean",
+    "build:types": "tsc --outDir __temp_tsc --declarationDir types --declaration true src/index.ts",
     "build:rollup": "rollup -c",
-    "prepare": "npm run clear && npm run build:tsc && npm run build:rollup",
-    "build": "npm run prepare",
-    "start": "rollup -c -w"
+    "build": "run-p build:*",
+    "postbuild": "rimraf __temp_tsc",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -37,32 +39,36 @@
   },
   "homepage": "https://9311.me/can-draw",
   "engines": {
-    "node": ">=8",
+    "node": ">=10",
     "npm": ">=5"
   },
-  "dependencies": {},
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "@babel/runtime": "^7.12.5",
+    "tslib": "^2.0.0"
+  },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-external-helpers": "^7.8.3",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/core": "^7.12.0",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.12.7",
     "@rollup/plugin-babel": "^5.2.2",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.1",
-    "@rollup/plugin-replace": "^2.3.4",
     "@rollup/plugin-typescript": "^5.0.2",
     "@rollup/plugin-url": "^6.0.0",
     "babel-eslint": "^9.0.0",
-    "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "eslint": "^5.4.0",
     "eslint-config-umi": "^1.4.0",
     "eslint-plugin-flowtype": "^2.50.0",
     "eslint-plugin-import": "^2.14.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
     "rollup": "^2.1.0",
     "rollup-plugin-terser": "^7.0.2",
-    "tslib": "^2.0.0",
     "typescript": "^4.0.0"
   },
   "peerDependencies": {},
