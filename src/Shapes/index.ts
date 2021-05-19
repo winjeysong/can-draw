@@ -24,7 +24,7 @@ export class Shape {
   protected _shapes: Array<AllShapes> = [];
   SHAPE_CONFIG!: AllShapeConfigInterface;
 
-  protected constructor(type?: ShapeType) {
+  constructor(type?: ShapeType) {
     this._type = type || 'NONE';
     this._contextMounted = false;
   }
