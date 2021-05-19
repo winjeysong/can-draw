@@ -37,6 +37,7 @@ class Circle extends CanDrawShape {
       shadowOffsetX,
       shadowOffsetY,
       opacity = 1,
+      lineCap = 'butt',
     } = this.SHAPE_CONFIG;
 
     const resolvedGradient = makeGradient.call(this, gradient);
@@ -48,6 +49,7 @@ class Circle extends CanDrawShape {
 
     ctx.translate(x, y);
     ctx.rotate(deg2Rad(rotate));
+    ctx.lineCap = lineCap;
     ctx.shadowBlur = shadowBlur as number;
     ctx.shadowColor = shadowColor as string;
     ctx.shadowOffsetX = shadowOffsetX as number;
