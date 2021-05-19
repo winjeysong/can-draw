@@ -18,7 +18,7 @@ class Text extends CanDrawShape {
 
   private _setFont({
     fontSize,
-    fontFamily,
+    fontFamily = 'sans-serif',
     fontStyle,
     fontVariant,
     fontWeight,
