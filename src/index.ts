@@ -15,8 +15,8 @@ const getSize = (container: HTMLElement): [number, number] => {
   const containerCss = getComputedStyle(container);
 
   return [
-    (containerRect.width || parseFloat(containerCss.width)) | 0,
-    (containerRect.height || parseFloat(containerCss.height)) | 0,
+    (parseFloat(containerCss.width) || container.offsetWidth || containerRect.width) | 0,
+    (parseFloat(containerCss.height) || container.offsetHeight || containerRect.height) | 0,
   ];
 };
 
