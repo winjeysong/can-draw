@@ -1,6 +1,6 @@
 {
   "name": "can-draw",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Draw canvas conveniently.",
   "main": "dist/index.js",
   "module": "dist/lib/index.js",
